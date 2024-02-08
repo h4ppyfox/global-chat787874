@@ -4,8 +4,14 @@ const fs = require("fs");
 const db = require("quick.db");
 
 client.on("ready", () => {
-  console.log(`Booted Up!`);
+  console.log(`der global chat ist nun online!`);
+  // Definiere usercount, bevor du versuchst, es zu verwenden
+  let usercount = 4; // Beispielwert, ersetze dies durch den tatsächlichen Wert
+
+  // Setze den Status des Bots mit usercount
+  client.user.setActivity(`🌎 | auf ${client.guilds.cache.size} Servern, ${usercount} Usern`, { type: 'WATCHING' });
 });
+
 
 client.on("message", async message => {
   if (message.author.bot) return;
@@ -23,7 +29,7 @@ client.on("message", async message => {
     if (!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send(`You are missing the **MANAGE GUILD** permission!`)
     if (!channel)
       return message.channel.send(
-        "Invalid Channel, Please mention a channel!!"
+        "1198210789044146318"
       );
     db.set(`g_${message.guild.id}`, `${channel.id}`);
     message.channel.send(`Global Chat Set to ${channel}!`);
@@ -38,7 +44,9 @@ client.on("message", async message => {
     const embed = new Discord.MessageEmbed()
       .setTitle("Username: " + message.author.tag)
       .addField("Message:", message.content)
-      .setFooter(`Server: ${message.guild.name} || Members: ${message.guild.memberCount}`).then(message.delete());
+      .setFooter(`Server: ${message.guild.name} || Members: ${message.guild.memberCount}`);
+      message.delete();
+    
     client.guilds.cache.forEach(g => {
       try {
         client.channels.cache.get(db.fetch(`g_${g.id}`)).send(embed);
@@ -49,4 +57,4 @@ client.on("message", async message => {
   }
 });
 const config = require("./config.json");
-client.login(config.token);
+client.login(config.token)
